@@ -1,39 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:harry_potter/models/character.dart';
 import 'package:harry_potter/screens/character_detail.dart';
+import 'package:provider/provider.dart';
 
-List<Character> characters = [
-  Character(
-    imageUrl:
-        'https://static.wikia.nocookie.net/esharrypotter/images/8/8d/PromoHP7_Harry_Potter.jpg',
-    name: 'Harry Potter',
-    stars: 3.4,
-    reviews: 50,
-    strength: 6,
-    magic: 8,
-    speed: 9,
-  ),
-  Character(
-    imageUrl:
-        'https://static.wikia.nocookie.net/warnerbros/images/3/3e/Hermione.jpg/revision/latest/scale-to-width-down/1200?cb=20120729103114&path-prefix=es',
-    name: 'Hermione Granger',
-    stars: 4.4,
-    reviews: 86,
-    strength: 7,
-    magic: 10,
-    speed: 8,
-  ),
-  Character(
-    imageUrl:
-        'https://static.wikia.nocookie.net/esharrypotter/images/6/69/P7_promo_Ron_Weasley.jpg',
-    name: 'Ron Weasley',
-    stars: 1.4,
-    reviews: 48,
-    strength: 8,
-    magic: 6,
-    speed: 6,
-  ),
-];
+import '../data/character_data.dart';
 
 class CharacterList extends StatelessWidget {
   const CharacterList({super.key});
@@ -44,25 +13,40 @@ class CharacterList extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Welcome to Hogwarts"),
       ),
-      body: ListView(
-        children: [
-          for (var character in characters)
-            ListTile(
-              leading: Hero(
-                  tag: character.name,
-                  child: Image.network(character.imageUrl)),
-              title: Text(character.name),
-              subtitle: Text("${character.reviews} reviews"),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
+      body: Consumer<CharacterData>(
+        builder: (context, characterData, child) {
+          return ListView(
+            children: [
+              for (var character in characterData.characters)
+                ListTile(
+                  leading: Hero(
+                      tag: character.name,
+                      child: Image.network(character.imageUrl)),
+                  title: Text(character.name),
+                  subtitle: Text("${character.reviews} reviews"),
+                  trailing: InkWell(
+                    onTap: () {
+                      characterData.toggleFavorite(character.id);
+                    },
+                    child: (character.favorite)
+                        ? const Icon(Icons.favorite, color: Colors.deepPurple)
+                        : const Icon(Icons.favorite_border,
+                            color: Colors.deepPurple),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
                         builder: (context) => CharacterDetail(
-                              character: character,
-                            )));
-              },
-            ),
-        ],
+                          id: character.id,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+            ],
+          );
+        },
       ),
     );
   }
