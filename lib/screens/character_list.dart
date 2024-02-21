@@ -3,6 +3,7 @@ import 'package:harry_potter/screens/character_detail.dart';
 import 'package:provider/provider.dart';
 
 import '../data/character_data.dart';
+import '../data/preferences.dart';
 
 class CharacterList extends StatelessWidget {
   const CharacterList({super.key});
@@ -12,38 +13,52 @@ class CharacterList extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Welcome to Hogwarts"),
+        actions: [
+          Consumer<Preferences>(builder: (context, preferences, child) {
+            return Switch(
+              value: preferences.showSubtitles,
+              onChanged: (value) {
+                preferences.setShowSubtitles(value);
+              },
+            );
+          }),
+        ],
       ),
       body: Consumer<CharacterData>(
         builder: (context, characterData, child) {
           return ListView(
             children: [
               for (var character in characterData.characters)
-                ListTile(
-                  leading: Hero(
-                      tag: character.name,
-                      child: Image.network(character.imageUrl)),
-                  title: Text(character.name),
-                  subtitle: Text("${character.reviews} reviews"),
-                  trailing: InkWell(
+                Consumer<Preferences>(builder: (context, preferences, child) {
+                  return ListTile(
+                    leading: Hero(
+                        tag: character.name,
+                        child: Image.asset(character.assetPath)),
+                    title: Text(character.name),
+                    subtitle: (preferences.showSubtitles)
+                        ? Text("${character.reviews} reviews")
+                        : Container(),
+                    trailing: InkWell(
+                      onTap: () {
+                        characterData.toggleFavorite(character.id);
+                      },
+                      child: (character.favorite)
+                          ? const Icon(Icons.favorite, color: Colors.deepPurple)
+                          : const Icon(Icons.favorite_border,
+                              color: Colors.deepPurple),
+                    ),
                     onTap: () {
-                      characterData.toggleFavorite(character.id);
-                    },
-                    child: (character.favorite)
-                        ? const Icon(Icons.favorite, color: Colors.deepPurple)
-                        : const Icon(Icons.favorite_border,
-                            color: Colors.deepPurple),
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CharacterDetail(
-                          id: character.id,
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CharacterDetail(
+                            id: character.id,
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                ),
+                      );
+                    },
+                  );
+                }),
             ],
           );
         },

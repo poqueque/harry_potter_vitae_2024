@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:harry_potter/gen/assets.gen.dart';
 import 'package:harry_potter/models/character.dart';
 
 class CharacterData extends ChangeNotifier {
   List<Character> characters = [
     Character(
       id: 1,
-      imageUrl:
-          'https://static.wikia.nocookie.net/esharrypotter/images/8/8d/PromoHP7_Harry_Potter.jpg',
+      assetPath: Assets.images.harry.path,
       name: 'Harry Potter',
       strength: 6,
       magic: 8,
@@ -14,8 +14,7 @@ class CharacterData extends ChangeNotifier {
     ),
     Character(
       id: 2,
-      imageUrl:
-          'https://static.wikia.nocookie.net/warnerbros/images/3/3e/Hermione.jpg/revision/latest/scale-to-width-down/1200?cb=20120729103114&path-prefix=es',
+      assetPath: Assets.images.hermione.path,
       name: 'Hermione Granger',
       strength: 7,
       magic: 10,
@@ -23,8 +22,7 @@ class CharacterData extends ChangeNotifier {
     ),
     Character(
       id: 3,
-      imageUrl:
-          'https://static.wikia.nocookie.net/esharrypotter/images/6/69/P7_promo_Ron_Weasley.jpg',
+      assetPath: Assets.images.ron.path,
       name: 'Ron Weasley',
       strength: 8,
       magic: 6,

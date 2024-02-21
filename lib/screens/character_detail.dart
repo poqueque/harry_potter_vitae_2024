@@ -30,8 +30,8 @@ class _CharacterDetailState extends State<CharacterDetail> {
             children: [
               Hero(
                 tag: character.name,
-                child: Image.network(
-                  character.imageUrl,
+                child: Image.asset(
+                  character.assetPath,
                   height: height * 0.6,
                 ),
               ),

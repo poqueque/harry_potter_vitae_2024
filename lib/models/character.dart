@@ -1,6 +1,6 @@
 class Character {
   final int id;
-  final String imageUrl;
+  final String assetPath;
   final String name;
   final int strength;
   final int magic;
@@ -12,7 +12,7 @@ class Character {
 
   Character({
     required this.id,
-    required this.imageUrl,
+    required this.assetPath,
     required this.name,
     required this.strength,
     required this.magic,
