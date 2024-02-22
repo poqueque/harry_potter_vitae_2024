@@ -30,12 +30,14 @@ class CharacterData extends ChangeNotifier {
     ),
   ];
 
+  /// This method returns a character from its id
   Character getCharacterFromId(int id) {
     Character character =
         characters.firstWhere((character) => character.id == id);
     return character;
   }
 
+  /// This method adds a review to a character
   void addReview(int id, int stars) {
     Character character = getCharacterFromId(id);
     character.reviews++;
@@ -43,9 +45,20 @@ class CharacterData extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// This method toggles the favorite status of a character
   void toggleFavorite(int id) {
     Character character = getCharacterFromId(id);
     character.favorite = !character.favorite;
+    notifyListeners();
+  }
+
+  void addCharacter(Character character) {
+    characters.add(character);
+    notifyListeners();
+  }
+
+  void removeCharacter(int id) {
+    characters.removeWhere((character) => character.id == id);
     notifyListeners();
   }
 }

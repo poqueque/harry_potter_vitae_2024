@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:harry_potter/screens/character_detail.dart';
 import 'package:provider/provider.dart';
 
@@ -13,18 +16,28 @@ class CharacterList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var l = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: (showAppBar)
           ? AppBar(
-              title: const Text("Welcome to Hogwarts"),
+              title: Text(l.welcome),
               actions: [
                 Consumer<Preferences>(builder: (context, preferences, child) {
-                  return Switch(
-                    value: preferences.showSubtitles,
-                    onChanged: (value) {
-                      preferences.setShowSubtitles(value);
-                    },
-                  );
+                  if (Platform.isIOS) {
+                    return Switch(
+                      value: preferences.showSubtitles,
+                      onChanged: (value) {
+                        preferences.setShowSubtitles(value);
+                      },
+                    );
+                  } else {
+                    return Switch.adaptive(
+                      value: preferences.showSubtitles,
+                      onChanged: (value) {
+                        preferences.setShowSubtitles(value);
+                      },
+                    );
+                  }
                 }),
               ],
             )
@@ -41,7 +54,7 @@ class CharacterList extends StatelessWidget {
                         child: Image.asset(character.assetPath)),
                     title: Text(character.name),
                     subtitle: (preferences.showSubtitles)
-                        ? Text("${character.reviews} reviews")
+                        ? Text(l.nReviews(character.reviews))
                         : Container(),
                     trailing: InkWell(
                       onTap: () {

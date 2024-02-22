@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:harry_potter/data/preferences.dart';
 import 'package:harry_potter/gen/fonts.gen.dart';
 import 'package:harry_potter/screens/adaptive_page.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => Preferences()),
       ],
       child: MaterialApp(
+        showPerformanceOverlay: true,
         title: 'Flutter Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -31,6 +33,8 @@ class MyApp extends StatelessWidget {
           ),
           useMaterial3: true,
         ),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: const AdaptivePage(),
       ),
     );

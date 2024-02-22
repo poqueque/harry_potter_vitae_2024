@@ -1,0 +1,22 @@
+{
+  "welcome": "Welcome to Hogwarts",
+  "@welcome": {
+    "description": "Header on the main screen"
+  },
+  "title": "{character} details",
+  "@title": {
+    "placeholders": {
+      "character": {
+        "type": "String"
+      }
+    }
+  },
+  "nReviews": "{count, plural, =0{no reviews} =1{1 review} other{{count} reviews}}",
+  "@nReviews": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
+}

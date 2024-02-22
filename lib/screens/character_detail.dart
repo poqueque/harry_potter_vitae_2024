@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:harry_potter/widgets/rating.dart';
 import 'package:provider/provider.dart';
 
@@ -16,19 +17,32 @@ class CharacterDetail extends StatefulWidget {
 
 class _CharacterDetailState extends State<CharacterDetail> {
   double lastClickedReview = 0;
+  late AppLocalizations l;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    l = AppLocalizations.of(context)!;
+  }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      appBar: (widget.showAppBar)
-          ? AppBar(
-              title: const Text("Harry Potter App"),
-            )
-          : null,
-      body: Consumer<CharacterData>(
-        builder: (context, characterData, child) {
-          Character character = characterData.getCharacterFromId(widget.id);
-          return Column(
+    return Consumer<CharacterData>(
+      builder: (context, characterData, child) {
+        Character character = characterData.getCharacterFromId(widget.id);
+        return Scaffold(
+          appBar: (widget.showAppBar)
+              ? AppBar(
+                  title: Text(l.title(character.name)),
+                )
+              : null,
+          body: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Hero(
@@ -42,7 +56,11 @@ class _CharacterDetailState extends State<CharacterDetail> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Rating(stars: character.totalStars / character.reviews),
-                  Text("${character.reviews} reviews"),
+                  Flexible(
+                    child: Text(
+                      l.nReviews(character.reviews),
+                    ),
+                  ),
                   InkWell(
                     onTap: () {
                       characterData.toggleFavorite(character.id);
@@ -97,9 +115,9 @@ class _CharacterDetailState extends State<CharacterDetail> {
                 ],
               )
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
