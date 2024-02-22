@@ -6,8 +6,9 @@ import '../data/character_data.dart';
 import '../models/character.dart';
 
 class CharacterDetail extends StatefulWidget {
-  const CharacterDetail({super.key, required this.id});
+  const CharacterDetail({super.key, required this.id, this.showAppBar = true});
   final int id;
+  final bool showAppBar;
 
   @override
   State<CharacterDetail> createState() => _CharacterDetailState();
@@ -19,9 +20,11 @@ class _CharacterDetailState extends State<CharacterDetail> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Harry Potter App"),
-      ),
+      appBar: (widget.showAppBar)
+          ? AppBar(
+              title: const Text("Harry Potter App"),
+            )
+          : null,
       body: Consumer<CharacterData>(
         builder: (context, characterData, child) {
           Character character = characterData.getCharacterFromId(widget.id);

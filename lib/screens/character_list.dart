@@ -6,24 +6,29 @@ import '../data/character_data.dart';
 import '../data/preferences.dart';
 
 class CharacterList extends StatelessWidget {
-  const CharacterList({super.key});
+  const CharacterList({super.key, this.showAppBar = true, this.onCharacterTap});
+
+  final bool showAppBar;
+  final Function(int)? onCharacterTap;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Welcome to Hogwarts"),
-        actions: [
-          Consumer<Preferences>(builder: (context, preferences, child) {
-            return Switch(
-              value: preferences.showSubtitles,
-              onChanged: (value) {
-                preferences.setShowSubtitles(value);
-              },
-            );
-          }),
-        ],
-      ),
+      appBar: (showAppBar)
+          ? AppBar(
+              title: const Text("Welcome to Hogwarts"),
+              actions: [
+                Consumer<Preferences>(builder: (context, preferences, child) {
+                  return Switch(
+                    value: preferences.showSubtitles,
+                    onChanged: (value) {
+                      preferences.setShowSubtitles(value);
+                    },
+                  );
+                }),
+              ],
+            )
+          : null,
       body: Consumer<CharacterData>(
         builder: (context, characterData, child) {
           return ListView(
@@ -48,14 +53,18 @@ class CharacterList extends StatelessWidget {
                               color: Colors.deepPurple),
                     ),
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CharacterDetail(
-                            id: character.id,
+                      if (onCharacterTap != null) {
+                        onCharacterTap!(character.id);
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CharacterDetail(
+                              id: character.id,
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      }
                     },
                   );
                 }),

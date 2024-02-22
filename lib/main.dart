@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harry_potter/data/preferences.dart';
 import 'package:harry_potter/gen/fonts.gen.dart';
-import 'package:harry_potter/screens/character_list.dart';
+import 'package:harry_potter/screens/adaptive_page.dart';
 import 'package:provider/provider.dart';
 
 import 'data/character_data.dart';
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
           ),
           useMaterial3: true,
         ),
-        home: const CharacterList(),
+        home: const AdaptivePage(),
       ),
     );
   }
